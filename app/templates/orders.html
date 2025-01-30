@@ -1,0 +1,49 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="p-6 bg-white rounded-lg shadow">
+  <h1 class="text-2xl font-bold mb-4">Megrendelések</h1>
+
+  <!-- Szűrési és keresési lehetőségek -->
+  <div class="mb-4 flex justify-between items-center">
+    <form method="GET" class="flex items-center gap-4">
+      <input type="text" name="search" placeholder="Keresés (pl. ügyfél neve)"
+             class="border rounded-lg p-2" />
+      <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+        Keresés
+      </button>
+    </form>
+    <a href="/orders/new" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+      Új megrendelés
+    </a>
+  </div>
+
+  <!-- Megrendelések táblázat -->
+  <table class="w-full table-auto border-collapse">
+    <thead>
+      <tr class="bg-gray-200">
+        <th class="border px-4 py-2">ID</th>
+        <th class="border px-4 py-2">Megrendelés típusa</th>
+        <th class="border px-4 py-2">Ügyfél neve</th>
+        <th class="border px-4 py-2">Státusz</th>
+        <th class="border px-4 py-2">Műveletek</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for order in orders %}
+      <tr class="hover:bg-gray-100">
+        <td class="border px-4 py-2">{{ order.id }}</td>
+        <td class="border px-4 py-2">{{ order.order_type }}</td>
+        <td class="border px-4 py-2">{{ order.customer_name }}</td>
+        <td class="border px-4 py-2">{{ order.status }}</td>
+        <td class="border px-4 py-2">
+          <a href="/orders/{{ order.id }}" class="text-blue-500 hover:underline">Részletek</a> |
+          <a href="/orders/{{ order.id }}/edit" class="text-green-500 hover:underline">Szerkesztés</a> |
+          <a href="/orders/{{ order.id }}/delete" class="text-red-500 hover:underline">Törlés</a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block title %}Új Megrendelés{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4">Új Megrendelés</h1>
+
+  <form method="POST" action="{{ url_for('new_order') }}">
+    <div class="mb-4">
+      <label class="block font-semibold">Megrendelő neve:</label>
+      <input type="text" name="customer_name" required class="border rounded-lg px-4 py-2 w-full" />
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Megrendelés típusa:</label>
+      <select name="order_type" required class="border rounded-lg px-4 py-2 w-full">
+        {% for order_type in order_types %}
+        <option value="{{ order_type.id }}">{{ order_type.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Leírás:</label>
+      <textarea name="description" class="border rounded-lg px-4 py-2 w-full"></textarea>
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Határidő:</label>
+      <input type="date" name="deadline" required class="border rounded-lg px-4 py-2 w-full" />
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Státusz:</label>
+      <select name="status" required class="border rounded-lg px-4 py-2 w-full">
+        {% for status in statuses %}
+        <option value="{{ status.id }}">{{ status.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600">
+      Megrendelés Létrehozása
+    </button>
+  </form>
+</div>
+{% endblock %}

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Új Árajánlat</title>
+</head>
+<body>
+    <h1>Új Árajánlat Hozzáadása</h1>
+    <form action="{{ url_for('add_quote') }}" method="POST">
+        <label for="company_name">Vállalat neve:</label>
+        <input type="text" name="company_name" required><br>
+
+        <label for="address">Cím:</label>
+        <input type="text" name="address" required><br>
+
+        <label for="tax_id">Adószám:</label>
+        <input type="text" name="tax_id" required><br>
+
+        <label for="contact_email">Kapcsolattartó Email:</label>
+        <input type="email" name="contact_email" required><br>
+
+        <label for="contact_phone">Kapcsolattartó Telefonszám:</label>
+        <input type="text" name="contact_phone" required><br>
+
+        <button type="submit">Hozzáadás</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+
+{% block title %}Megrendelés megtekintése{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4">Megrendelés részletei</h1>
+
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <p><strong>Azonosító:</strong> {{ order.id }}</p>
+    <p><strong>Cég neve:</strong> {{ order.company_name }}</p>
+    <p><strong>Megrendelés dátuma:</strong> {{ order.date_created }}</p>
+    <p><strong>Státusz:</strong> {{ order.status }}</p>
+    <p><strong>Megjegyzés:</strong> {{ order.notes }}</p>
+  </div>
+
+  <div class="mt-6">
+    <a href="{{ url_for('edit_order', id=order.id) }}" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">Szerkesztés</a>
+    <a href="{{ url_for('orders') }}" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">Vissza a listához</a>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,46 @@
+<!-- add_item.html -->
+{% extends "base.html" %}
+
+{% block title %}Új Tétel Hozzáadása{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4">Új Tétel Hozzáadása</h1>
+
+  <form method="POST" class="bg-white p-6 rounded-lg shadow-md">
+    {{ form.hidden_tag() }}
+    <div class="mb-4">
+      {{ form.name.label }}
+      {{ form.name(class="form-control") }}
+      {% for error in form.name.errors %}
+        <div class="text-red-500 text-sm">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-4">
+      {{ form.quantity.label }}
+      {{ form.quantity(class="form-control") }}
+      {% for error in form.quantity.errors %}
+        <div class="text-red-500 text-sm">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-4">
+      {{ form.unit.label }}
+      {{ form.unit(class="form-control") }}
+      {% for error in form.unit.errors %}
+        <div class="text-red-500 text-sm">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mb-4">
+      {{ form.unit_price.label }}
+      {{ form.unit_price(class="form-control") }}
+      {% for error in form.unit_price.errors %}
+        <div class="text-red-500 text-sm">{{ error }}</div>
+      {% endfor %}
+    </div>
+    <div class="mt-4">
+      <button type="submit" class="btn btn-primary">{{ form.submit }}</button>
+    </div>
+  </form>
+  <a href="{{ url_for('view_quote', quote_id=quote.id) }}" class="mt-4 text-blue-500">Vissza az árajánlathoz</a>
+</div>
+{% endblock %}

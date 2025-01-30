@@ -1,0 +1,42 @@
+/* Keresőmező */
+.search-bar {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.search-bar input {
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    width: 100%;
+}
+
+.search-bar button {
+    padding: 8px 12px;
+}
+
+/* Táblázat egyedi megjelenés */
+.quotes-table {
+    background: white;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.quotes-table th {
+    background: #28a745;
+}
+
+.quotes-table td {
+    border-bottom: 1px solid #ddd;
+}
+
+/* Linkek */
+.quotes-table a {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.quotes-table a:hover {
+    text-decoration: underline;
+}

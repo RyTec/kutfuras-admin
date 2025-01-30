@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block title %}Árajánlatok{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4">Árajánlatok kezelése</h1>
+
+  <!-- Keresőmező -->
+  <div class="mb-6">
+    <form method="GET" action="{{ url_for('show_quotes') }}">
+      <div class="flex items-center gap-2">
+        <input
+          type="text"
+          name="search"
+          class="border rounded-lg px-4 py-2 w-full"
+          placeholder="Keresés cégnév vagy státusz alapján..."
+          value="{{ request.args.get('search') }}"
+        />
+        <button
+          type="submit"
+          class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+        >
+          Keresés
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <!-- Árajánlatok táblázata -->
+  <div class="overflow-x-auto">
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="border px-4 py-2">Azonosító</th>
+          <th class="border px-4 py-2">Cég neve</th>
+          <th class="border px-4 py-2">Dátum</th>
+          <th class="border px-4 py-2">Státusz</th>
+          <th class="border px-4 py-2">Műveletek</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for quote in quotes %}
+        <tr>
+          <td class="border px-4 py-2">{{ quote.id }}</td>
+          <td class="border px-4 py-2">{{ quote.company_name }}</td>
+          <td class="border px-4 py-2">{{ quote.date_created }}</td>
+          <td class="border px-4 py-2">{{ quote.status }}</td>
+          <td class="border px-4 py-2">
+            <a
+              href="{{ url_for('view_quote', id=quote.id) }}"
+              class="text-blue-500 hover:underline"
+            >
+              Megtekintés
+            </a>
+            |
+            <a
+              href="{{ url_for('edit_quote', id=quote.id) }}"
+              class="text-green-500 hover:underline"
+            >
+              Szerkesztés
+            </a>
+            |
+            <a
+              href="{{ url_for('delete_quote', id=quote.id) }}"
+              class="text-red-500 hover:underline"
+              onclick="return confirm('Biztosan törölni szeretnéd?');"
+            >
+              Törlés
+            </a>
+          </td>
+        </tr>
+        {% else %}
+        <tr>
+          <td colspan="5" class="border px-4 py-2 text-center">Nincsenek árajánlatok.</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

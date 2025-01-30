@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Megrendelés Szerkesztése{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4">Megrendelés Szerkesztése</h1>
+
+  <form method="POST" action="{{ url_for('edit_order', id=order.id) }}">
+    <div class="mb-4">
+      <label class="block font-semibold">Megrendelő neve:</label>
+      <input type="text" name="customer_name" value="{{ order.customer_name }}" required class="border rounded-lg px-4 py-2 w-full" />
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Megrendelés típusa:</label>
+      <select name="order_type" required class="border rounded-lg px-4 py-2 w-full">
+        {% for order_type in order_types %}
+        <option value="{{ order_type.id }}" {% if order_type.id == order.order_type_id %}selected{% endif %}>
+          {{ order_type.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Leírás:</label>
+      <textarea name="description" class="border rounded-lg px-4 py-2 w-full">{{ order.description }}</textarea>
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Határidő:</label>
+      <input type="date" name="deadline" value="{{ order.deadline }}" required class="border rounded-lg px-4 py-2 w-full" />
+    </div>
+
+    <div class="mb-4">
+      <label class="block font-semibold">Státusz:</label>
+      <select name="status" required class="border rounded-lg px-4 py-2 w-full">
+        {% for status in statuses %}
+        <option value="{{ status.id }}" {% if status.id == order.status_id %}selected{% endif %}>
+          {{ status.name }}
+        </option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600">
+      Mentés
+    </button>
+  </form>
+</div>
+{% endblock %}

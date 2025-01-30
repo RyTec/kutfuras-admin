@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Árajánlat törlése{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4 text-red-600">Árajánlat törlése</h1>
+
+  <div class="bg-white shadow-md rounded-lg p-6">
+    <p>Biztosan törölni szeretné az alábbi árajánlatot?</p>
+    <p><strong>Azonosító:</strong> {{ quote.id }}</p>
+    <p><strong>Cég neve:</strong> {{ quote.company_name }}</p>
+    <p><strong>Dátum:</strong> {{ quote.date_created }}</p>
+    <p><strong>Státusz:</strong> {{ quote.status }}</p>
+
+    <form method="POST" action="{{ url_for('delete_quote', id=quote.id) }}" class="mt-4">
+      <button
+        type="submit"
+        class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600"
+      >
+        Törlés
+      </button>
+      <a
+        href="{{ url_for('quotes') }}"
+        class="ml-4 text-gray-600 hover:underline"
+      >
+        Mégse
+      </a>
+    </form>
+  </div>
+</div>
+{% endblock %}

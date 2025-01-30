@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+
+{% block title %}Árajánlat szerkesztése{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4">Árajánlat szerkesztése</h1>
+
+  <form action="{{ url_for('update_quote', quote_id=quote.id) }}" method="POST" class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Cég adatai</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-medium mb-1">Cég neve</label>
+        <input
+          type="text"
+          name="company_name"
+          value="{{ quote.company_name }}"
+          class="w-full border-gray-300 rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Adószám</label>
+        <input
+          type="text"
+          name="tax_number"
+          value="{{ quote.tax_number }}"
+          class="w-full border-gray-300 rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Kapcsolattartó</label>
+        <input
+          type="text"
+          name="contact_name"
+          value="{{ quote.contact_name }}"
+          class="w-full border-gray-300 rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Email</label>
+        <input
+          type="email"
+          name="contact_email"
+          value="{{ quote.contact_email }}"
+          class="w-full border-gray-300 rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Telefonszám</label>
+        <input
+          type="text"
+          name="contact_phone"
+          value="{{ quote.contact_phone }}"
+          class="w-full border-gray-300 rounded-lg p-2"
+          required
+        />
+      </div>
+      <div>
+        <label class="block text-sm font-medium mb-1">Székhely</label>
+        <input
+          type="text"
+          name="address"
+          value="{{ quote.address }}"
+          class="w-full border-gray-300 rounded-lg p-2"
+          required
+        />
+      </div>
+    </div>
+
+    <h2 class="text-xl font-semibold mt-6 mb-4">Árajánlat tételei</h2>
+    <div id="items-container">
+      {% for item in quote.items %}
+      <div class="flex items-center gap-4 mb-4">
+        <input
+          type="text"
+          name="item_name[]"
+          value="{{ item.name }}"
+          placeholder="Tétel megnevezése"
+          class="border-gray-300 rounded-lg p-2 w-1/3"
+          required
+        />
+        <input
+          type="number"
+          name="item_quantity[]"
+          value="{{ item.quantity }}"
+          placeholder="Mennyiség"
+          class="border-gray-300 rounded-lg p-2 w-1/6"
+          required
+        />
+        <input
+          type="text"
+          name="item_unit[]"
+          value="{{ item.unit }}"
+          placeholder="Egység"
+          class="border-gray-300 rounded-lg p-2 w-1/6"
+          required
+        />
+        <input
+          type="number"
+          step="0.01"
+          name="item_unit_price[]"
+          value="{{ item.unit_price }}"
+          placeholder="Egységár"
+          class="border-gray-300 rounded-lg p-2 w-1/6"
+          required
+        />
+        <button
+          type="button"
+          class="text-red-500 hover:text-red-700 font-semibold"
+          onclick="removeItem(this)"
+        >
+          Törlés
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+    <button
+      type="button"
+      class="mt-2 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+      onclick="addItem()"
+    >
+      + Tétel hozzáadása
+    </button>
+
+    <!-- New section for displaying total price -->
+    <div class="mt-4">
+      <h3 class="text-lg font-semibold">Összesen: <span id="total-price">0</span> Ft</h3>
+    </div>
+
+    <div class="mt-6">
+      <button
+        type="submit"
+        class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+      >
+        Mentés
+      </button>
+      <a
+        href="{{ url_for('quotes') }}"
+        class="ml-4 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+      >
+        Mégse
+      </a>
+    </div>
+  </form>
+</div>
+
+<script>
+  function addItem() {
+    const container = document.getElementById("items-container");
+    const div = document.createElement("div");
+    div.classList.add("flex", "items-center", "gap-4", "mb-4");
+    div.innerHTML = `
+      <input
+        type="text"
+        name="item_name[]"
+        placeholder="Tétel megnevezése"
+        class="border-gray-300 rounded-lg p-2 w-1/3"
+        required
+      />
+      <input
+        type="number"
+        name="item_quantity[]"
+        placeholder="Mennyiség"
+        class="border-gray-300 rounded-lg p-2 w-1/6"
+        required
+      />
+      <input
+        type="text"
+        name="item_unit[]"
+        placeholder="Egység"
+        class="border-gray-300 rounded-lg p-2 w-1/6"
+        required
+      />
+      <input
+        type="number"
+        step="0.01"
+        name="item_unit_price[]"
+        placeholder="Egységár"
+        class="border-gray-300 rounded-lg p-2 w-1/6"
+        required
+      />
+      <button
+        type="button"
+        class="text-red-500 hover:text-red-700 font-semibold"
+        onclick="removeItem(this)"
+      >
+        Törlés
+      </button>
+    `;
+    container.appendChild(div);
+    updateTotalPrice();  // Update the total price when a new item is added
+  }
+
+  function removeItem(button) {
+    const container = document.getElementById("items-container");
+    container.removeChild(button.parentElement);
+    updateTotalPrice();  // Update the total price when an item is removed
+  }
+
+  function updateTotalPrice() {
+    let totalPrice = 0;
+    const quantities = document.getElementsByName("item_quantity[]");
+    const prices = document.getElementsByName("item_unit_price[]");
+
+    for (let i = 0; i < quantities.length; i++) {
+      const quantity = parseFloat(quantities[i].value) || 0;
+      const price = parseFloat(prices[i].value) || 0;
+      totalPrice += quantity * price;
+    }
+
+    document.getElementById("total-price").innerText = totalPrice.toFixed(2);
+  }
+
+  // Initial update of total price on page load (in case there are pre-filled items)
+  document.addEventListener('DOMContentLoaded', updateTotalPrice);
+</script>
+{% endblock %}

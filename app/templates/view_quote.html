@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block title %}Árajánlat megtekintése{% endblock %}
+
+{% block content %}
+<div class="container mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4">Árajánlat részletei</h1>
+
+  <div class="bg-white p-6 rounded-lg shadow-md">
+    <h2 class="text-xl font-semibold mb-4">Cég adatai</h2>
+    <p><strong>Cég neve:</strong> {{ quote.company_name }}</p>
+    <p><strong>Adószám:</strong> {{ quote.tax_number }}</p>
+    <p><strong>Kapcsolattartó:</strong> {{ quote.contact_name }}</p>
+    <p><strong>Email:</strong> {{ quote.contact_email }}</p>
+    <p><strong>Telefonszám:</strong> {{ quote.contact_phone }}</p>
+    <p><strong>Székhely:</strong> {{ quote.address }}</p>
+
+    <h2 class="text-xl font-semibold mt-6 mb-4">Tételek</h2>
+    <table class="table-auto w-full border-collapse border border-gray-300">
+      <thead>
+        <tr class="bg-gray-100">
+          <th class="border border-gray-300 px-4 py-2">Tétel neve</th>
+          <th class="border border-gray-300 px-4 py-2">Mennyiség</th>
+          <th class="border border-gray-300 px-4 py-2">Egység</th>
+          <th class="border border-gray-300 px-4 py-2">Egységár (HUF)</th>
+          <th class="border border-gray-300 px-4 py-2">Összeg (HUF)</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in quote.items %}
+        <tr>
+          <td class="border border-gray-300 px-4 py-2">{{ item.name }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ item.quantity }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ item.unit }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ item.unit_price | round(2) }}</td>
+          <td class="border border-gray-300 px-4 py-2">{{ (item.quantity * item.unit_price) | round(2) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+      <tfoot>
+        <tr class="bg-gray-100">
+          <td colspan="4" class="border border-gray-300 px-4 py-2 text-right font-bold">Végösszeg:</td>
+          <td class="border border-gray-300 px-4 py-2 font-bold">{{ quote.total | round(2) }} HUF</td>
+        </tr>
+      </tfoot>
+    </table>
+
+    <div class="mt-6">
+      <a
+        href="{{ url_for('quotes') }}"
+        class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+      >
+        Vissza
+      </a>
+      <a
+        href="{{ url_for('edit_quote', quote_id=quote.id) }}"
+        class="ml-4 bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600"
+      >
+        Szerkesztés
+      </a>
+      <a
+        href="{{ url_for('export_quote_pdf', quote_id=quote.id) }}"
+        class="ml-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600"
+      >
+        PDF exportálás
+      </a>
+    </div>
+  </div>
+</div>
+{% endblock %}
